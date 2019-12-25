@@ -31,7 +31,7 @@ class Dogadjaj
 
 public:
 	Dogadjaj() = default;
-
+	~Dogadjaj() = default;
 	Dogadjaj(std::string naziv,std::string vrsta,std::string opis, std::string lokacija,std::tm datum) : naziv(naziv), vrsta(vrsta), datum(datum),opis(opis), lokacija(lokacija) 
 	{}
 	
