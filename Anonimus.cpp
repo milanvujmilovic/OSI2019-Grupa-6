@@ -1,7 +1,16 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include "Anonimus.h"
-#include <ctime>
-#pragma warning(suppress : 4996)
+
+Anonimus::Anonimus()
+{
+	std::string tmp = "Guest";
+	int broj;
+	broj = rand();
+	broj = broj % 1000;
+	char* tmp2 = new char[5];
+	_itoa(broj, tmp2, 10);
+	ime = tmp + tmp2;
+	delete[5] tmp2;
+}
 
 void Anonimus::pisiDogadjaj(std::vector<std::string>& dogadjaj)
 {
@@ -24,48 +33,6 @@ tm& Anonimus::konverzijaDatuma()
 	std::time_t nova = time(0);
 	tm* p = localtime(&nova);
 	return *p;
-}
-
-Anonimus::Anonimus()
-{
-	ime = "";
-}
-
-void Anonimus::igrajKviz(std::ifstream& pitanja, std::ifstream& odgovori)
-{
-	int br = 0, n = 10;
-	std::string pomocna, x, c, a, b, ce;
-	a = 'a';
-	b = 'b';
-	ce = 'c';
-	do {
-
-		std::getline(pitanja, pomocna);
-		std::cout << pomocna << std::endl;
-		std::getline(pitanja, pomocna);
-		std::cout << pomocna << std::endl;
-		std::getline(pitanja, pomocna);
-		std::cout << pomocna << std::endl;
-		std::getline(pitanja, pomocna);
-		std::cout << pomocna << std::endl;
-		std::getline(odgovori, x);
-		do {
-			std::cout << "Unesite odgovor (a,b ili c) :" << std::endl;
-			std::cin >> c;
-		} while ((c.compare(a) != 0) && (c.compare(b) != 0) && (c.compare(ce) != 0));
-		if ((c.compare(a) == 0) || (c.compare(b) == 0) || (c.compare(ce) == 0))
-		{
-			if (c.compare(x) == 0)
-			{
-				std::cout << "Tacan odgovor!" << std::endl;
-				br++;
-			}
-			else
-				std::cout << "Pogresan odgovor!" << std::endl;
-		}
-		n--;
-	} while (n);
-	std::cout << "Vas konacan rezultat je: " << br << " tacnih odgovora od 10 mogucih." << std::endl << "         Hvala na ucestvovanju!" << std::endl;
 }
 
 void Anonimus::pregledDanasnjihDogadjaja(std::ifstream& dat1, std::ifstream& dat2)
@@ -156,7 +123,7 @@ void Anonimus::pregledProslihDogadjaja(std::ifstream& dat1, std::ifstream& dat2)
 		tm p = konverzijaDatuma();
 		std::getline(dat2, pomocna);
 		int br_kom = stoi(pomocna);
-		for(int i=0;i<br_kom;i++)
+		for (int i = 0; i < br_kom; i++)
 		{
 			std::getline(dat2, pomocna);
 			dogadjaj.push_back(pomocna);
@@ -168,6 +135,87 @@ void Anonimus::pregledProslihDogadjaja(std::ifstream& dat1, std::ifstream& dat2)
 	}
 	if (k == 0) std::cout << "Nema buducih dogadjaja u gradu." << std::endl;
 	dat1.seekg(0); dat2.seekg(0);
+}
+
+void Anonimus::igrajKviz(std::fstream& pitanja, std::fstream& odgovori)
+{
+	int br = 0, n = 10;
+	std::string pomocna, x, c, a ,b ,ce;
+	a = 'a';
+	b = 'b';
+	ce = 'c';
+	do {
+		std::getline(pitanja, pomocna);
+		std::cout << pomocna << std::endl;
+		std::getline(pitanja, pomocna);
+		std::cout << pomocna << std::endl;
+		std::getline(pitanja, pomocna);
+		std::cout << pomocna << std::endl;
+		std::getline(pitanja, pomocna);
+		std::cout << pomocna << std::endl;
+		std::getline(odgovori, x);
+		do {
+			std::cout << "Unesite odgovor (a,b ili c) :" << std::endl;
+			std::cin >> c;
+		} while ((c.compare(a) != 0) && (c.compare(b) != 0) && (c.compare(ce) != 0));
+			if ((c.compare(a) == 0) || (c.compare(b) == 0) || (c.compare(ce) == 0))
+			{
+				if (c.compare(x) == 0)
+				{
+					std::cout << "Tacan odgovor!" << std::endl;
+					br++;
+				}
+				else
+					std::cout << "Pogresan odgovor!" << std::endl;
+			}
+		n--;
+	} while (n);
+	std::cout << "Vas konacan rezultat je: " << br << " tacnih odgovora od 10 mogucih."<<std::endl<<"         Hvala na ucestvovanju!"<<std::endl;
+}
+
+void Anonimus::pregledPoKategoriji(std::ifstream& dogadjaj, std::ifstream& konfiguracija, std::ifstream& kategorije)
+{
+	std::string pomocna1, pomocna2,kategorija,ponuda;
+	std::vector<std::string> dog;
+	int brojD, brojK;
+	brojD = brojDogadjaja(konfiguracija);
+	std::cout << "Izaberite zeljenu kategoriju:" << std::endl;
+	while (!kategorije.eof())
+	{
+		std::getline(kategorije, ponuda);
+		std::cout << "-" << ponuda << std::endl;
+	}
+	std::cin >> kategorija;
+	std::transform(kategorija.begin(), kategorija.end(), kategorija.begin(), ::tolower);
+	for (int i = 0; i < brojD; i++)
+	{
+		int pom = 0;
+		std::getline(dogadjaj, pomocna1);
+		dog.push_back(pomocna1);
+		std::getline(dogadjaj, pomocna1);
+		dog.push_back(pomocna1);
+		std::transform(pomocna1.begin(), pomocna1.end(), pomocna1.begin(), ::tolower);
+		if (kategorija.compare(pomocna1) == 0)
+			pom = 1;
+		std::getline(dogadjaj, pomocna1);
+		dog.push_back(pomocna1);
+		std::getline(dogadjaj, pomocna1);
+		dog.push_back(pomocna1);
+		std::getline(dogadjaj, pomocna1);
+		dog.push_back(pomocna1);
+		std::getline(dogadjaj, pomocna1);
+		brojK = std::stoi(pomocna1);
+		dog.push_back(pomocna1);
+		for (int j = 0; j < brojK; j++)
+		{
+			std::getline(dogadjaj, pomocna1);
+			dog.push_back(pomocna1);
+		}
+		if (pom == 1)
+			pisiDogadjaj(dog);
+		dog.clear();
+
+	}
 }
 
 Anonimus::~Anonimus()
