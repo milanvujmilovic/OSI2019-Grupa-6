@@ -216,6 +216,9 @@ void Anonimus::pregledPoKategoriji(std::ifstream& dogadjaj, std::ifstream& konfi
 		dog.clear();
 
 	}
+	dogadjaj.seekg(0);
+	konfiguracija.seekg(0);
+	kategorije.seekg(0);
 }
 
 Anonimus::~Anonimus()
