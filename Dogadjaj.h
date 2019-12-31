@@ -17,10 +17,11 @@ class Dogadjaj
 		stream << "Datum: " << other.datum.tm_mday << "." << other.datum.tm_mon << "." << other.datum.tm_year << "." << " " << other.datum.tm_hour << ":" << other.datum.tm_min << std::endl;
 		stream << "Komentari: " << std::endl;
 		for(auto x:other.komentari)
-			{
-				stream<<x<<std::endl;
-			}
+		{
+			stream<<x<<std::endl;
+		}
 	}
+
 	std::string naziv;
 	std::vector<std::string> komentari;
 	std::string opis;
@@ -77,7 +78,7 @@ public:
 	void setLokacija(std::string lokacija) { this->lokacija = lokacija; }
 	std::string getLokacija() { return this->lokacija; }
 
-	void setOpis() { this->opis = opis; }
+	void setOpis(std::string opis) { this->opis = opis; }
 	std::string getOpis() { return this->opis; }
 
 	void setKomentar(std::string komentar) { komentari.push_back(komentar); }
@@ -107,7 +108,7 @@ public:
 		std::string temp;
 		int broj;
 		std::ifstream ispis;
-		ispis.open("Dogadjaj.txt", std::ios::in);
+		ispis.open("Dogadjaji.txt", std::ios::in);
 		std::fstream upis;
 		upis.open("Temp.txt", std::ios::in | std::ios::out | std::ios::app);
 		while (!ispis.eof()) 
@@ -134,9 +135,9 @@ public:
 		}
 		ispis.close();
 		upis.close();
-		remove("Dogadjaj.txt");
+		remove("Dogadjaji.txt");
 
-		rename("Temp.txt", "Dogadjaj.txt");
+		rename("Temp.txt", "Dogadjaji.txt");
 
 	}
 
