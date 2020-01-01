@@ -56,9 +56,8 @@ int Administrator::prijava()
 	}
 }
 
-std::vector<Dogadjaj> Administrator::citajDogadjaje()
+void Administrator::citajDogadjaje(std::vector<Dogadjaj>& nizDogadjaja)
 {
-	std::vector<Dogadjaj> nizDogadjaja;
 	std::ifstream fajlDogadjaji;
 	fajlDogadjaji.open("Dogadjaji.txt");
 	while (!fajlDogadjaji.eof())
@@ -75,7 +74,7 @@ std::vector<Dogadjaj> Administrator::citajDogadjaje()
 		pomDogadjaj.setLokacija(pomString);
 		getline(fajlDogadjaji, pomString);//cita datum kao string
 		std::tm datum;//konvertovati string u datum
-		std::vector<std::string> pomVektor = split(pomString, '-');//vidicemo ove li biti problema kad kalaba popravi format
+		std::vector<std::string> pomVektor = split(pomString, '-');
 		std::string pomDatum = pomVektor.at(0);
 		std::string pomVrijeme = pomVektor.at(1);
 		std::vector<std::string> pVDatum = split(pomDatum, '.');
@@ -98,52 +97,52 @@ std::vector<Dogadjaj> Administrator::citajDogadjaje()
 		nizDogadjaja.push_back(pomDogadjaj);
 	}
 	fajlDogadjaji.close();
-	return nizDogadjaja;
 }
 
-void Administrator::sortirajDogadjaje(std::vector<Dogadjaj> nizDogadjaja)
+void Administrator::sortirajDogadjaje(std::vector<Dogadjaj>& nizDogadjaja,std::string parametar)
 {
-	std::string parametar;//ime,datum,kategorija,lokacija
-	while (parametar != "ime" || parametar != "lokacija" || parametar != "datum" || parametar != "kategorija")
+	if (parametar == "ime" || parametar == "lokacija" || parametar == "datum" || parametar == "kategorija")
 	{
-		std::cout << "Unesite validan parametar za sortiranje:";
-		std::cin >> parametar;
-	}
-	if (parametar == "ime")
-	{
-		//std::sort(nizDogadjaja.begin(), nizDogadjaja.end(), [](Dogadjaj a, Dogadjaj b) {return a.getNaziv() < b.getNaziv(); });
-	}
-	else if (parametar == "kategorija")
-	{
-		//std::sort(nizDogadjaja.begin(), nizDogadjaja.end(), [](Dogadjaj a, Dogadjaj b) {return a.getVrsta() < b.getVrsta(); });
-	}
-	else if (parametar == "datum")
-	{
-		/*std::sort(nizDogadjaja.begin(), nizDogadjaja.end(), [](Dogadjaj a, Dogadjaj b)
-			{
-				std::tm datum1 = a.getDatum();
-				std::tm datum2 = b.getDatum();
-				if (datum1.tm_year < datum2.tm_year)
+		if (parametar == "ime")
+		{
+			std::sort(nizDogadjaja.begin(), nizDogadjaja.end(), [](Dogadjaj a, Dogadjaj b) {return a.getNaziv() < b.getNaziv(); });
+		}
+		else if (parametar == "kategorija")
+		{
+			std::sort(nizDogadjaja.begin(), nizDogadjaja.end(), [](Dogadjaj a, Dogadjaj b) {return a.getVrsta() < b.getVrsta(); });
+		}
+		else if (parametar == "datum")
+		{
+			std::sort(nizDogadjaja.begin(), nizDogadjaja.end(), [](Dogadjaj a, Dogadjaj b)
 				{
-					return true;
-				}
-				else if (datum1.tm_year == datum2.tm_year && datum1.tm_mon < datum2.tm_mon)
-				{
-					return true;
-				}
-				else if (datum1.tm_year == datum2.tm_year && datum1.tm_mon == datum2.tm_mon && datum1.tm_mday < datum2.tm_mday)
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			});*/
+					std::tm datum1 = a.getDatum();
+					std::tm datum2 = b.getDatum();
+					if (datum1.tm_year < datum2.tm_year)
+					{
+						return true;
+					}
+					else if (datum1.tm_year == datum2.tm_year && datum1.tm_mon < datum2.tm_mon)
+					{
+						return true;
+					}
+					else if (datum1.tm_year == datum2.tm_year && datum1.tm_mon == datum2.tm_mon && datum1.tm_mday < datum2.tm_mday)
+					{
+						return true;
+					}
+					else
+					{
+						return false;
+					}
+				});
+		}
+		else
+		{
+			std::sort(nizDogadjaja.begin(), nizDogadjaja.end(), [](Dogadjaj a, Dogadjaj b) {return a.getLokacija() < b.getLokacija(); });
+		}
 	}
 	else
 	{
-		//std::sort(nizDogadjaja.begin(), nizDogadjaja.end(), [](Dogadjaj a, Dogadjaj b) {return a.getLokacija() < b.getLokacija(); });
+		std::cout << "Unijeli ste nevazeci parametar pregleda!"<< std::endl;
 	}
 }
 
@@ -277,7 +276,8 @@ int Administrator::urediDogadjaj(std::string naziv)
 
 int Administrator::pregledDogadjaja()
 {
-	std::vector<Dogadjaj> nizDogadjaja = citajDogadjaje();
+	std::vector<Dogadjaj> nizDogadjaja;
+	citajDogadjaje(nizDogadjaja);
 	std::cout << "Zelite li da sortiran pregled dogadjaja?(Da ili Ne)";
 	std::string odgovor;
 	std::cin >> odgovor;
@@ -290,7 +290,10 @@ int Administrator::pregledDogadjaja()
 	}
 	else
 	{
-		sortirajDogadjaje(nizDogadjaja);
+		std::string parametar;
+		std::cout << "Unesite parametar za sortiranje:";
+		std::cin >> parametar;
+		sortirajDogadjaje(nizDogadjaja,parametar);
 		for (auto x : nizDogadjaja)
 		{
 			x.print();

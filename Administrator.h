@@ -14,8 +14,8 @@ class Administrator
 
 		int provjeraPrijave();//uradjeno
 		int prijava();//uradjeno
-		void sortirajDogadjaje(std::vector<Dogadjaj> nizDogadjaja);//problem sa operatorom = iz Dogadjaja
-		std::vector<Dogadjaj> citajDogadjaje();//uradjeno
+		void sortirajDogadjaje(std::vector<Dogadjaj>& nizDogadjaja, std::string parametar);//uradjeno
+		void citajDogadjaje(std::vector<Dogadjaj>&);//uradjeno
 		bool provjeraKategorije(std::string);//uradjeno
 		void initDogadjaja();//uradjeno
 		std::vector<std::string> split(const std::string& s, char delimiter);//uradjeno
@@ -24,7 +24,7 @@ class Administrator
 		~Administrator();
 		void kreirajDogadjaj();//uradjeno
 		int urediDogadjaj(std::string);
-		int pregledDogadjaja();//problem sa operatorom dodjele iz kalse Dogadjaj,potrebno preklopiti mozda
+		int pregledDogadjaja();//uradjeno
 		int pregledKategorija();//uradjeno
 		int dodajKategoriju();
 		int obrisiKategoriju();
