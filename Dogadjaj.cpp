@@ -23,6 +23,7 @@ Dogadjaj::Dogadjaj(const Dogadjaj& dogadjaj)
 	{
 		this->komentari.push_back(x);
 	}
+
 }
 
 Dogadjaj::Dogadjaj(Dogadjaj&& dogadjaj)	noexcept
@@ -93,9 +94,9 @@ void Dogadjaj::izbrisiDogadjaj()
 	ispis.open("Dogadjaji.txt", std::ios::in);
 	std::fstream upis;
 	upis.open("Temp.txt", std::ios::in | std::ios::out | std::ios::app);
-    while (!ispis.eof())
-    {
-        getline(ispis, temp);
+        while (!ispis.eof())
+        {
+		getline(ispis, temp);
 		if (this->naziv == temp)
 		{
 			getline(ispis, temp);
@@ -107,7 +108,8 @@ void Dogadjaj::izbrisiDogadjaj()
 			for (int i = 0; i < broj; i++)
 			{
 				getline(ispis, temp);
-            }
+
+			}
 		}
 		else
 		{
@@ -117,12 +119,15 @@ void Dogadjaj::izbrisiDogadjaj()
 	ispis.close();
 	upis.close();
 	remove("Dogadjaji.txt");
-    rename("Temp.txt", "Dogadjaji.txt");
+
+	rename("Temp.txt", "Dogadjaji.txt");
+
 }
 
 void Dogadjaj::print()
 {
 	std::cout << *this;
+
 }
 
 std::ostream& operator<<(std::ostream& stream, const Dogadjaj& other)

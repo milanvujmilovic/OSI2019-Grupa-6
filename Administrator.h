@@ -15,6 +15,9 @@ class Administrator
 		int prijava();//uradjeno
 		void sortirajDogadjaje(std::vector<Dogadjaj>& nizDogadjaja, std::string parametar);//uradjeno
 		void citajDogadjaje(std::vector<Dogadjaj>&);//uradjeno
+		int dodaj();
+		int brisi();
+		int uredi();
 		bool provjeraKategorije(std::string);//uradjeno
 		void initDogadjaja();//uradjeno
 		std::vector<std::string> split(const std::string& s, char delimiter);//uradjeno
@@ -22,6 +25,7 @@ class Administrator
 		Administrator()=default;
 		~Administrator();
 		void kreirajDogadjaj();//uradjeno
+		void odjava();
 		int urediDogadjaj();
 		int pregledDogadjaja();//uradjeno
 		int pregledKategorija();//uradjeno

@@ -28,7 +28,7 @@ int Administrator::prijava()
 	std::cout << "Lozinka: ";
 	std::cin >> novaSifra;
 	std::cout << std::endl;
-
+    std::cin.ignore();
 	std::ifstream fajlNalozi;
 	fajlNalozi.open("Nalozi.txt",std::ios::in);
 	while (!fajlNalozi.eof())
@@ -233,6 +233,7 @@ Administrator::~Administrator()
 
 void Administrator::kreirajDogadjaj()
 {
+
 	if (provjeraPrijave())
 	{
 		std::string odgovor;
@@ -264,107 +265,41 @@ void Administrator::kreirajDogadjaj()
 		initDogadjaja();
 	}
 	return;
+
 }
 
 int Administrator::urediDogadjaj()
 {
-	std::string naziv("");
-	std::string novi("");
-	std::cout<<"Unesite ime dogadjaja koji zelite promijeniti:\n";
- 	getline(std::cin,naziv);
-	std::vector <Dogadjaj> dogadjaji;
-	Dogadjaj pomDogadjaj;
-	citajDogadjaje(dogadjaji);
-	int pom=0,i=0,pos;
-	for(Dogadjaj &temp: dogadjaji)
-    {
-       if(((naziv.compare(temp.getNaziv()))==0))
-        {
-            pom=1;
-            pos=i;
-        }
-        i++;
-
-    }
-
-    if(pom==1)
-    {
-
-        int uslov=1;
-        char brojParametra;
-        std::cout<<"Izaberite broj ispred parametra koji zelite urediti:\n1-naziv\n2-kategorija\n3-opis\n4-Lokacija\n5-Datum\nq-prekinite uredjivanje\n";
-        while(uslov)
-        {
-            std::cin>>brojParametra;
-            std::cin.ignore();
-            if(brojParametra=='1')
-            {
-
-                std::cout<<"Unesite novi naziv: ";
-                getline(std::cin,novi);
-                dogadjaji[pos].setNaziv(novi);
-            }
-            else if(brojParametra=='2')
-            {
-
-                std::cout<<"Unesite kategoriju: ";
-                getline(std::cin,novi);
-               // dodajKategoriju(novi);
-               if(provjeraKategorije(novi))
-                    dogadjaji[pos].setVrsta(novi);
-               else
-                    std::cout<<"Kategorija nije pronadjena!\n";
-            }
-            else if(brojParametra=='3')
-            {
-
-                std::cout<<"Unesite novi opis: ";
-                getline(std::cin,novi);
-                dogadjaji[pos].setOpis(novi);
-            }
-            else if(brojParametra=='4')
-            {
-
-                std::cout<<"Unesite novi lokaciju: ";
-                getline(std::cin,novi);
-                dogadjaji[pos].setLokacija(novi);
-            }
-            else if(brojParametra=='5')
-            {
-                std::tm datum;
-                int dan,mjesec,godina,sat,min;
-                std::cout << "Unesite novi datum odrzavanja:\n";
-                std::cout << "Dan:";
-                std::cin >> dan;
-                std::cout << "Mjesec:";
-                std::cin >> mjesec;
-                std::cout << "Godina:";
-                std::cin >> godina;
-                std::cout << "Vrijeme odrzavanja:\n";
-                std::cout << "Sati:";
-                std::cin >> sat;
-                std::cout << "Minuti:";
-                std::cin >> min;
-                datum.tm_mday = dan;
-                datum.tm_mon = mjesec;
-                datum.tm_year = godina;
-                datum.tm_hour = sat;
-                datum.tm_min = min;
-                dogadjaji[pos].setDatum(datum);
-            }
-            else if(brojParametra=='q')
-                uslov=0;
-
-        }
-        remove("Dogadjaji.txt");
-    for(Dogadjaj &temp: dogadjaji)
-    {
-      temp.upisDogadjaja();
-
-    }
-    }
-    else
-        printf("Uneseni dogadjaj ne postoji\n");
+    if (provjeraPrijave())
+	{
+		std::string odgovor;
+		std::cout << "Niste prijavljeni u sistem.\nDa li zelite da se prijavite?(Da ili Ne)";// << std::endl;
+		std::cin >> odgovor;
+		while (odgovor != "Da" || odgovor != "da" || odgovor != "DA" || odgovor != "Ne" || odgovor != "ne" || odgovor != "NE")
+		{
+			if (odgovor == "Da" || odgovor == "da" || odgovor == "DA")
+			{
+				if (prijava())
+				{
+					std::cout << "Nemoguce kreiranje dogadjaja.Nemate administratorski nalog.";//<< std::endl;
+					break;
+				}
+				else
+				{
+					uredi();
+					break;
+				}
+			}
+			else
+			{
+				return 0;
+			}
+		}
+	}
+	else
+	{
+		uredi();
+	}
 	return 0;
 }
 
@@ -416,44 +351,112 @@ int Administrator::pregledKategorija()
 
 int Administrator::dodajKategoriju()
 {
-	std::string pomString,novaKategorija;
-	std::ifstream fajlKategorije;
-	std::ofstream fajl;
-	fajlKategorije.open("Kategorije.txt");
-	std::cout<<"Unesite novu kategoriju:\n";
-	getline(std::cin,novaKategorija);
-	if (fajlKategorije.is_open())
+if (provjeraPrijave())
 	{
-		while (!fajlKategorije.eof())
+		std::string odgovor;
+		std::cout << "Niste prijavljeni u sistem.\nDa li zelite da se prijavite?(Da ili Ne)";// << std::endl;
+		std::cin >> odgovor;
+		while (odgovor != "Da" || odgovor != "da" || odgovor != "DA" || odgovor != "Ne" || odgovor != "ne" || odgovor != "NE")
 		{
-			getline(fajlKategorije, pomString);
-			if(pomString.compare(novaKategorija)==0)
-            {
-                std::cout<<"Kategorija vec postoji\n";
-                fajlKategorije.close();
-                return 0;
-            }
+			if (odgovor == "Da" || odgovor == "da" || odgovor == "DA")
+			{
+				if (prijava())
+				{
+					std::cout << "Nemoguce kreiranje dogadjaja.Nemate administratorski nalog.";//<< std::endl;
+					break;
+				}
+				else
+				{
+					dodaj();
+					break;
+				}
+			}
+			else
+			{
+				return 0;
+			}
 		}
-        fajlKategorije.close();
-    }
-    fajl.open("Kategorije.txt", std::ios_base::app);
-    if (fajl.is_open())
+	}
+	else
 	{
-	    fajl<<novaKategorija<<std::endl;
-		fajl.close();
-    }
+		dodaj();
+	}
 	return 0;
 }
 
 int Administrator::obrisiKategoriju()
 {
+if (provjeraPrijave())
+	{
+		std::string odgovor;
+		std::cout << "Niste prijavljeni u sistem.\nDa li zelite da se prijavite?(Da ili Ne)";// << std::endl;
+		std::cin >> odgovor;
+		while (odgovor != "Da" || odgovor != "da" || odgovor != "DA" || odgovor != "Ne" || odgovor != "ne" || odgovor != "NE")
+		{
+			if (odgovor == "Da" || odgovor == "da" || odgovor == "DA")
+			{
+				if (prijava())
+				{
+					std::cout << "Nemoguce kreiranje dogadjaja.Nemate administratorski nalog.";//<< std::endl;
+					break;
+				}
+				else
+				{
+					brisi();
+					break;
+				}
+			}
+			else
+			{
+				return 0;
+			}
+		}
+	}
+	else
+	{
+		brisi();
+	}
+	return 0;
+}
+int Administrator:: dodaj()
+{
+    std::string pomString,novaKategorija;
+    std::ifstream fajlKategorije;
+    std::ofstream fajl;
+    fajlKategorije.open("Kategorije.txt");
+    std::cout<<"Unesite novu kategoriju:\n";
+    getline(std::cin,novaKategorija);
+    if (fajlKategorije.is_open())
+    {
+        while (!fajlKategorije.eof())
+        {
+            getline(fajlKategorije, pomString);
+            if(pomString.compare(novaKategorija)==0)
+            {
+                std::cout<<"Kategorija vec postoji\n";
+                fajlKategorije.close();
+                return 0;
+            }
+        }
+        fajlKategorije.close();
+    }
+    fajl.open("Kategorije.txt", std::ios_base::app);
+    if (fajl.is_open())
+    {
+        fajl<<novaKategorija<<std::endl;
+        fajl.close();
+    }
+    return 0;
+}
+int Administrator:: brisi()
+{
     std::string temp;
     std::string kategorija;
     std::cout<<"Unesite kategoriju koju zelite obrisati:\n";
     getline(std::cin,kategorija);
-	std::ifstream ispis;
-	ispis.open("Kategorije.txt");
-	std::ofstream upis("Temp.txt");
+    std::ifstream ispis;
+    ispis.open("Kategorije.txt");
+    std::ofstream upis("Temp.txt");
     if(ispis.is_open() && upis.is_open())
     {
         ispis.seekg(0,ispis.end);
@@ -471,7 +474,102 @@ int Administrator::obrisiKategoriju()
         upis.close();
         remove("Kategorije.txt");
         rename("Temp.txt", "Kategorije.txt");
-        }
+    }
     return 0;
 }
-
+int Administrator:: uredi()
+{
+    std::string naziv("");
+    std::string novi("");
+    std::cout<<"Unesite ime dogadjaja koji zelite promijeniti:\n";
+    getline(std::cin,naziv);
+    std::vector <Dogadjaj> dogadjaji;
+    Dogadjaj pomDogadjaj;
+    citajDogadjaje(dogadjaji);
+    int pom=0,i=0,pos;
+    for(Dogadjaj &temp: dogadjaji)
+    {
+        if(((naziv.compare(temp.getNaziv()))==0))
+        {
+            pom=1;
+            pos=i;
+        }
+        i++;
+    }
+    if(pom==1)
+    {
+        int uslov=1;
+        char brojParametra;
+        std::cout<<"Izaberite broj ispred parametra koji zelite urediti:\n1-naziv\n2-kategorija\n3-opis\n4-Lokacija\n5-Datum\nq-prekinite uredjivanje\n";
+        while(uslov)
+        {
+            std::cin>>brojParametra;
+            std::cin.ignore();
+            if(brojParametra=='1')
+            {
+                std::cout<<"Unesite novi naziv: ";
+                getline(std::cin,novi);
+                dogadjaji[pos].setNaziv(novi);
+            }
+            else if(brojParametra=='2')
+            {
+                std::cout<<"Unesite kategoriju: ";
+                getline(std::cin,novi);
+                if(provjeraKategorije(novi))
+                    dogadjaji[pos].setVrsta(novi);
+                else
+                    std::cout<<"Kategorija nije pronadjena!\n";
+            }
+            else if(brojParametra=='3')
+            {
+                std::cout<<"Unesite novi opis: ";
+                getline(std::cin,novi);
+                dogadjaji[pos].setOpis(novi);
+            }
+            else if(brojParametra=='4')
+            {
+                std::cout<<"Unesite novi lokaciju: ";
+                getline(std::cin,novi);
+                dogadjaji[pos].setLokacija(novi);
+            }
+            else if(brojParametra=='5')
+            {
+                std::tm datum;
+                int dan,mjesec,godina,sat,min;
+                std::cout << "Unesite novi datum odrzavanja:\n";
+                std::cout << "Dan:";
+                std::cin >> dan;
+                std::cout << "Mjesec:";
+                std::cin >> mjesec;
+                std::cout << "Godina:";
+                std::cin >> godina;
+                std::cout << "Vrijeme odrzavanja:\n";
+                std::cout << "Sati:";
+                std::cin >> sat;
+                std::cout << "Minuti:";
+                std::cin >> min;
+                datum.tm_mday = dan;
+                datum.tm_mon = mjesec;
+                datum.tm_year = godina;
+                datum.tm_hour = sat;
+                datum.tm_min = min;
+                dogadjaji[pos].setDatum(datum);
+                }
+                else if(brojParametra=='q')
+                    uslov=0;
+            }
+            remove("Dogadjaji.txt");
+            for(Dogadjaj &temp: dogadjaji)
+            {
+                temp.upisDogadjaja();
+            }
+        }
+        else
+    printf("Uneseni dogadjaj ne postoji\n");
+}
+void Administrator::odjava()
+{
+    this->ime="";
+    this->sifra="";
+    std::cout<<"Uspjesno ste se odjavili\n";
+}
