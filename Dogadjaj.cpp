@@ -44,9 +44,17 @@ void Dogadjaj::upisDogadjaja()
 {
 	std::ofstream file;
 	file.open("Dogadjaji.txt", std::ios::app);
+	int trenutno=file.tellp();
+    file.seekp(0,file.beg);
+    int pocetak=file.tellp();
+    file.seekp(0,file.end);
+    int kraj=file.tellp();
+    file.seekp(trenutno,file.beg);
 	if (file.is_open())
 	{
-		file << std::endl;
+
+		if(pocetak==kraj){
+
 		file << this->naziv << std::endl;
 		file << this->vrsta << std::endl;
 		file << this->opis << std::endl;
@@ -58,6 +66,22 @@ void Dogadjaj::upisDogadjaja()
 			file << std::endl;
 			file << x;
 		}
+		}
+		else
+        {
+        file << std::endl;
+        file << this->naziv << std::endl;
+		file << this->vrsta << std::endl;
+		file << this->opis << std::endl;
+		file << this->lokacija << std::endl;
+		file << this->datum.tm_mday << "." << datum.tm_mon << "." << this->datum.tm_year << "." << "-" << this->datum.tm_hour << ":" << this->datum.tm_min << std::endl;
+		file << this->komentari.size();
+		for (auto x : this->komentari)
+		{
+			file << std::endl;
+			file << x;
+		}
+        }
 		file.close();
 	}
 }
@@ -70,8 +94,8 @@ void Dogadjaj::izbrisiDogadjaj()
 	ispis.open("Dogadjaji.txt", std::ios::in);
 	std::fstream upis;
 	upis.open("Temp.txt", std::ios::in | std::ios::out | std::ios::app);
-	while (!ispis.eof())
-	{
+        while (!ispis.eof())
+        {
 		getline(ispis, temp);
 		if (this->naziv == temp)
 		{
@@ -89,7 +113,7 @@ void Dogadjaj::izbrisiDogadjaj()
 		}
 		else
 		{
-			upis << temp << std::endl;
+            upis << temp << std::endl;
 		}
 	}
 	ispis.close();

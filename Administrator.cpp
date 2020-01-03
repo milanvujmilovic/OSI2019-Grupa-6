@@ -201,7 +201,7 @@ void Administrator::initDogadjaja()
 	std::cin >> mjesec;
 	std::cout << "Godina:";
 	std::cin >> godina;
-	std::cout << "Vreijeme odrzavanja:\n";
+	std::cout << "Vrijeme odrzavanja:\n";
 	std::cout << "Sati:";
 	std::cin >> sat;
 	std::cout << "Minuti:";
@@ -238,7 +238,7 @@ void Administrator::kreirajDogadjaj()
 		std::string odgovor;
 		std::cout << "Niste prijavljeni u sistem.\nDa li zelite da se prijavite?(Da ili Ne)";// << std::endl;
 		std::cin >> odgovor;
-		while (odgovor != "Da" || odgovor != "da" || odgovor != "DA" || odgovor != "Ne" || odgovor != "ne" || odgovor != "NE") 
+		while (odgovor != "Da" || odgovor != "da" || odgovor != "DA" || odgovor != "Ne" || odgovor != "ne" || odgovor != "NE")
 		{
 			if (odgovor == "Da" || odgovor == "da" || odgovor == "DA")
 			{
@@ -266,11 +266,105 @@ void Administrator::kreirajDogadjaj()
 	return;
 }
 
-int Administrator::urediDogadjaj(std::string naziv)
+int Administrator::urediDogadjaj()
 {
-	/*procitaj dogadjaj iz memorije na osnovu imena ili imena i datuma*/
-	/*odabir parametara koji se mjenjaju u jednu while(true) petlju staviti da moze da mijenja koliko oce i lupiti q za izlaz*/
-	/*update dogadjaja u memoriji*/
+	std::string naziv("");
+	std::string novi("");
+	std::cout<<"Unesite ime dogadjaja koji zelite promijeniti:\n";
+ 	getline(std::cin,naziv);
+	std::vector <Dogadjaj> dogadjaji;
+	Dogadjaj pomDogadjaj;
+	citajDogadjaje(dogadjaji);
+	int pom=0,i=0,pos;
+	for(Dogadjaj &temp: dogadjaji)
+    {
+       if(((naziv.compare(temp.getNaziv()))==0))
+        {
+            pom=1;
+            pos=i;
+        }
+        i++;
+
+    }
+
+    if(pom==1)
+    {
+
+        int uslov=1;
+        char brojParametra;
+        std::cout<<"Izaberite broj ispred parametra koji zelite urediti:\n1-naziv\n2-kategorija\n3-opis\n4-Lokacija\n5-Datum\nq-prekinite uredjivanje\n";
+        while(uslov)
+        {
+            std::cin>>brojParametra;
+            std::cin.ignore();
+            if(brojParametra=='1')
+            {
+
+                std::cout<<"Unesite novi naziv: ";
+                getline(std::cin,novi);
+                dogadjaji[pos].setNaziv(novi);
+            }
+            else if(brojParametra=='2')
+            {
+
+                std::cout<<"Unesite kategoriju: ";
+                getline(std::cin,novi);
+               // dodajKategoriju(novi);
+               if(provjeraKategorije(novi))
+                    dogadjaji[pos].setVrsta(novi);
+               else
+                    std::cout<<"Kategorija nije pronadjena!\n";
+            }
+            else if(brojParametra=='3')
+            {
+
+                std::cout<<"Unesite novi opis: ";
+                getline(std::cin,novi);
+                dogadjaji[pos].setOpis(novi);
+            }
+            else if(brojParametra=='4')
+            {
+
+                std::cout<<"Unesite novi lokaciju: ";
+                getline(std::cin,novi);
+                dogadjaji[pos].setLokacija(novi);
+            }
+            else if(brojParametra=='5')
+            {
+                std::tm datum;
+                int dan,mjesec,godina,sat,min;
+                std::cout << "Unesite novi datum odrzavanja:\n";
+                std::cout << "Dan:";
+                std::cin >> dan;
+                std::cout << "Mjesec:";
+                std::cin >> mjesec;
+                std::cout << "Godina:";
+                std::cin >> godina;
+                std::cout << "Vrijeme odrzavanja:\n";
+                std::cout << "Sati:";
+                std::cin >> sat;
+                std::cout << "Minuti:";
+                std::cin >> min;
+                datum.tm_mday = dan;
+                datum.tm_mon = mjesec;
+                datum.tm_year = godina;
+                datum.tm_hour = sat;
+                datum.tm_min = min;
+                dogadjaji[pos].setDatum(datum);
+            }
+            else if(brojParametra=='q')
+                uslov=0;
+
+        }
+        remove("Dogadjaji.txt");
+    for(Dogadjaj &temp: dogadjaji)
+    {
+      temp.upisDogadjaja();
+
+    }
+    }
+    else
+        printf("Uneseni dogadjaj ne postoji\n");
 	return 0;
 }
 
@@ -322,20 +416,62 @@ int Administrator::pregledKategorija()
 
 int Administrator::dodajKategoriju()
 {
-	/*ucitavanje kategorija u memoriju
-	provjera da li kategorija vec postoji
-	provjera je li osnovna kategorija
-	dodavanje kategorije*/
+	std::string pomString,novaKategorija;
+	std::ifstream fajlKategorije;
+	std::ofstream fajl;
+	fajlKategorije.open("Kategorije.txt");
+	std::cout<<"Unesite novu kategoriju:\n";
+	getline(std::cin,novaKategorija);
+	if (fajlKategorije.is_open())
+	{
+		while (!fajlKategorije.eof())
+		{
+			getline(fajlKategorije, pomString);
+			if(pomString.compare(novaKategorija)==0)
+            {
+                std::cout<<"Kategorija vec postoji\n";
+                fajlKategorije.close();
+                return 0;
+            }
+		}
+        fajlKategorije.close();
+    }
+    fajl.open("Kategorije.txt", std::ios_base::app);
+    if (fajl.is_open())
+	{
+	    fajl<<novaKategorija<<std::endl;
+		fajl.close();
+    }
 	return 0;
 }
 
 int Administrator::obrisiKategoriju()
 {
-	/*ucitavanje kategorija u memoriju
-	provjera da li kategorija vec postoji
-	provjera je li osnovna kategorija
-	brisanje kategorije
-	update svih dogadjaja koji posjeduju tu kategoriju*/
-	return 0;
+    std::string temp;
+    std::string kategorija;
+    std::cout<<"Unesite kategoriju koju zelite obrisati:\n";
+    getline(std::cin,kategorija);
+	std::ifstream ispis;
+	ispis.open("Kategorije.txt");
+	std::ofstream upis("Temp.txt");
+    if(ispis.is_open() && upis.is_open())
+    {
+        ispis.seekg(0,ispis.end);
+        int duzina=ispis.tellg();
+        ispis.seekg(0,ispis.beg);
+        while (ispis.tellg()<duzina)
+        {
+            getline(ispis, temp);
+            if (kategorija.compare(temp)!=0)
+            {
+                upis << temp << std::endl;
+            }
+        }
+        ispis.close();
+        upis.close();
+        remove("Kategorije.txt");
+        rename("Temp.txt", "Kategorije.txt");
+        }
+    return 0;
 }
 

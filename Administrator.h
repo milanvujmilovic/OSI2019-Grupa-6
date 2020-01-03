@@ -11,7 +11,6 @@ class Administrator
 	private:
 		std::string ime="";
 		std::string sifra="";
-
 		int provjeraPrijave();//uradjeno
 		int prijava();//uradjeno
 		void sortirajDogadjaje(std::vector<Dogadjaj>& nizDogadjaja, std::string parametar);//uradjeno
@@ -23,7 +22,7 @@ class Administrator
 		Administrator()=default;
 		~Administrator();
 		void kreirajDogadjaj();//uradjeno
-		int urediDogadjaj(std::string);
+		int urediDogadjaj();
 		int pregledDogadjaja();//uradjeno
 		int pregledKategorija();//uradjeno
 		int dodajKategoriju();
