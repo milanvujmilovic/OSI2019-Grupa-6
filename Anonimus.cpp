@@ -137,10 +137,10 @@ void Anonimus::pregledProslihDogadjaja(std::ifstream& dat1, std::ifstream& dat2)
 	dat1.seekg(0); dat2.seekg(0);
 }
 
-void Anonimus::igrajKviz(std::fstream& pitanja, std::fstream& odgovori)
+void Anonimus::igrajKviz(std::ifstream& pitanja, std::ifstream& odgovori)
 {
 	int br = 0, n = 10;
-	std::string pomocna, x, c, a ,b ,ce;
+	std::string pomocna, x, c, a, b, ce;
 	a = 'a';
 	b = 'b';
 	ce = 'c';
@@ -158,24 +158,26 @@ void Anonimus::igrajKviz(std::fstream& pitanja, std::fstream& odgovori)
 			std::cout << "Unesite odgovor (a,b ili c) :" << std::endl;
 			std::cin >> c;
 		} while ((c.compare(a) != 0) && (c.compare(b) != 0) && (c.compare(ce) != 0));
-			if ((c.compare(a) == 0) || (c.compare(b) == 0) || (c.compare(ce) == 0))
+		if ((c.compare(a) == 0) || (c.compare(b) == 0) || (c.compare(ce) == 0))
+		{
+			if (c.compare(x) == 0)
 			{
-				if (c.compare(x) == 0)
-				{
-					std::cout << "Tacan odgovor!" << std::endl;
-					br++;
-				}
-				else
-					std::cout << "Pogresan odgovor!" << std::endl;
+				std::cout << "Tacan odgovor!" << std::endl;
+				br++;
 			}
+			else
+				std::cout << "Pogresan odgovor!" << std::endl;
+		}
 		n--;
 	} while (n);
-	std::cout << "Vas konacan rezultat je: " << br << " tacnih odgovora od 10 mogucih."<<std::endl<<"         Hvala na ucestvovanju!"<<std::endl;
+	std::cout << "Vas konacan rezultat je: " << br << " tacnih odgovora od 10 mogucih." << std::endl << "         Hvala na ucestvovanju!" << std::endl;
+	pitanja.seekg(0);
+	odgovori.seekg(0);
 }
 
 void Anonimus::pregledPoKategoriji(std::ifstream& dogadjaj, std::ifstream& konfiguracija, std::ifstream& kategorije)
 {
-	std::string pomocna1, pomocna2,kategorija,ponuda;
+	std::string pomocna1, pomocna2, kategorija, ponuda;
 	std::vector<std::string> dog;
 	int brojD, brojK;
 	brojD = brojDogadjaja(konfiguracija);
