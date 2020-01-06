@@ -21,7 +21,7 @@ public:
 	void pregledBuducihDogadjaja(std::ifstream&, std::ifstream&);
 	void pregledProslihDogadjaja(std::ifstream&, std::ifstream&);
 	void dodavanjeKomentara(std::fstream);
-	void igrajKviz(std::fstream&, std::fstream&);
+	void igrajKviz(std::ifstream&, std::ifstream&);
 	void pisiDogadjaj(std::vector<std::string>&);
 	int brojDogadjaja(std::ifstream&);
 	tm& konverzijaDatuma();
