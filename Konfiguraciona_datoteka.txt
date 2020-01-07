@@ -1,4 +1,4 @@
-Ime grada:
+﻿Ime grada:
 Banja Luka
 Poštanski broj:
 78 000
@@ -9,4 +9,4 @@ Broj stanovnika:
 Pozivni broj:
 051
 Broj dogadjaja u gradu:
-4
+9

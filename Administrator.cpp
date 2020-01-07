@@ -213,6 +213,7 @@ void Administrator::initDogadjaja()
 	datum.tm_min = min;
 	Dogadjaj noviDogadjaj{ ime,kategorija,opis,lokacija,datum };
 	noviDogadjaj.upisDogadjaja();
+	kofiguracija();
 }
 
 std::vector<std::string> Administrator::split(const std::string& s, char delimiter)
@@ -443,7 +444,9 @@ int Administrator:: dodaj()
     fajl.open("Kategorije.txt", std::ios_base::app);
     if (fajl.is_open())
     {
-        fajl<<novaKategorija<<std::endl;
+		/*Obezbjediti korektan unos ako nema ni jedne kategorije*/
+		fajl << std::endl;//radi kad se dodaje na kraj
+		fajl << novaKategorija;//radi kad se dodaje na kraj
         fajl.close();
     }
     return 0;
@@ -477,7 +480,7 @@ int Administrator:: brisi()
     }
     return 0;
 }
-int Administrator:: uredi()
+void Administrator:: uredi()
 {
     std::string naziv("");
     std::string novi("");
@@ -510,27 +513,36 @@ int Administrator:: uredi()
                 std::cout<<"Unesite novi naziv: ";
                 getline(std::cin,novi);
                 dogadjaji[pos].setNaziv(novi);
+				uslov = 0;
             }
             else if(brojParametra=='2')
             {
                 std::cout<<"Unesite kategoriju: ";
                 getline(std::cin,novi);
-                if(provjeraKategorije(novi))
-                    dogadjaji[pos].setVrsta(novi);
-                else
-                    std::cout<<"Kategorija nije pronadjena!\n";
+				if (provjeraKategorije(novi))
+				{
+					dogadjaji[pos].setVrsta(novi);
+					uslov = 0;
+				}
+				else
+				{
+					std::cout << "Kategorija nije pronadjena!\n";
+					uslov = 0;
+				}
             }
             else if(brojParametra=='3')
             {
                 std::cout<<"Unesite novi opis: ";
                 getline(std::cin,novi);
                 dogadjaji[pos].setOpis(novi);
+				uslov = 0;
             }
             else if(brojParametra=='4')
             {
                 std::cout<<"Unesite novi lokaciju: ";
                 getline(std::cin,novi);
                 dogadjaji[pos].setLokacija(novi);
+				uslov = 0;
             }
             else if(brojParametra=='5')
             {
@@ -554,6 +566,7 @@ int Administrator:: uredi()
                 datum.tm_hour = sat;
                 datum.tm_min = min;
                 dogadjaji[pos].setDatum(datum);
+				uslov = 0;
                 }
                 else if(brojParametra=='q')
                     uslov=0;
@@ -566,6 +579,41 @@ int Administrator:: uredi()
         }
         else
     printf("Uneseni dogadjaj ne postoji\n");
+}
+void Administrator::kofiguracija()
+{
+	std::fstream fajl;
+	std::vector<std::string> pomVek;
+	fajl.open("Konfiguraciona_datoteka.txt", std::ios::in | std::ios::out);
+	std::string pomString;
+	int pom=0;
+	if (fajl.is_open())
+	{
+		std::cout << "uspjeh";
+		for (int i = 0; i < 12; ++i)
+		{
+			getline(fajl, pomString);
+			pomVek.push_back(pomString);
+		}
+		pom = stoi(pomString);
+		pom++;
+		fajl.close();
+		std::fstream upis;
+		upis.open("Temp.txt", std::ios::in | std::ios::out | std::ios::app);
+		for (int i = 0; i < 12; ++i)
+		{
+			if (i < 11)
+			{
+				upis << pomVek[i] << std::endl;
+			}
+			else
+				upis << pom;
+		}
+		upis.close();
+		remove("Konfiguraciona_datoteka.txt");
+		rename("Temp.txt", "Konfiguraciona_datoteka.txt");
+	}
+
 }
 void Administrator::odjava()
 {
