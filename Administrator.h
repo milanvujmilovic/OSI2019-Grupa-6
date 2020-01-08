@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <conio.h>
 #include "Dogadjaj.h"
 
 class Administrator
@@ -15,7 +16,7 @@ class Administrator
 		void citajDogadjaje(std::vector<Dogadjaj>&);//uradjeno
 		int dodaj();
 		int brisi();
-         int pomBrisi();
+        void pomBrisi();
 		void uredi();
 		void kofiguracija();//update kofiguracione datoteke pri kreiranju dogadjaja
 		bool provjeraKategorije(std::string);//uradjeno

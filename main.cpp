@@ -1,19 +1,25 @@
-#include <iostream>
-#include <stdlib.h>
-#include "../../osi1/Administrator.h"
-using namespace std;
-
+#include "Administrator.h"
+#include "Naslov.h"
 int main()
 {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SMALL_RECT windowSize = { 0, 0, 150, 24 };
+    SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
+    SetConsoleTitle(L"EVENT LEADER 2019");
+    Sleep(2000);
+    std::cout << "=========================================================================================================================\n";
+    ascii_art();
+    std::cout << "=========================================================================================================================\n";
+    Sleep(2000);
     char opcija;
     Administrator s;
     while(true){
-    std::cout<<"=========================================\n";
+    std::cout<<"=========================================================================================================================\n";
     std::cout<<"Izaberite  zeljenu opciju: \n";
-    std::cout<<"=========================================\n";
+    std::cout<<"=========================================================================================================================\n";
     std::cout<<"0-Prijava\n";
     std::cout<<"1-Kreiraj dogadjaj\n";
-    std::cout<<"2-Brisi dogadjaja\n";
+    std::cout<<"2-Brisanje dogadjaja\n";
     std::cout<<"3-Pregled dogadjaja\n";
     std::cout<<"4-Pregled kategorija\n";
     std::cout<<"5-Uredi dogadjaj\n";
@@ -22,7 +28,7 @@ int main()
     std::cout<<"8-Ocisti ekran\n";
     std::cout<<"9-Odjava\n";
     std::cout<<"q-Izadji iz programa\n";
-    std::cout<<"=========================================\n";
+    std::cout<<"=========================================================================================================================\n";
         std::cin>>opcija;
         std::cin.ignore();
          if(opcija=='0')
@@ -72,8 +78,9 @@ int main()
         {
             return 0;
         }
-        std::cout<<endl;
+        std::cout<<std::endl;
 
     }
     return 0;
 }
+

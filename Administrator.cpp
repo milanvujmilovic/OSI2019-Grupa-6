@@ -25,8 +25,15 @@ int Administrator::prijava()
 	std::cout << "Molimo vas unesite korisnicko ime i lozinku:\n";
 	std::cout << "Korisnicko ime: ";
 	std::cin >> novoIme;
+	char ch;
 	std::cout << "Lozinka: ";
-	std::cin >> novaSifra;
+	ch = _getch();
+	while (ch != 13) 
+	{//character 13 is enter
+		novaSifra.push_back(ch);
+		std::cout << '*';
+		ch = _getch();
+	}
 	std::cout << std::endl;
     std::cin.ignore();
 	std::ifstream fajlNalozi;
@@ -178,8 +185,7 @@ void Administrator::initDogadjaja()
 	int godina;
 	int sat;
 	int min;
-	std::cout << "Kreiranje dogadjaja" << std::endl;
-	getchar();
+
 	std::cout << "Ime dogadjaja:";
 	std::getline(std::cin, ime);
 	std::cout << "Kategorija:";
@@ -315,6 +321,7 @@ int Administrator::pregledDogadjaja()
 	{
 		for (auto x : nizDogadjaja)
 		{
+			std::cout << "=========================================================================================================================\n";
 			x.print();
 		}
 	}
@@ -326,6 +333,7 @@ int Administrator::pregledDogadjaja()
 		sortirajDogadjaje(nizDogadjaja,parametar);
 		for (auto x : nizDogadjaja)
 		{
+			std::cout << "=========================================================================================================================\n";
 			x.print();
 		}
 	}
@@ -334,7 +342,9 @@ int Administrator::pregledDogadjaja()
 
 int Administrator::pregledKategorija()
 {
+	std::cout << "=========================================================================================================================\n";
 	std::cout << "Kategorije dogadjaja u gradu:\n";
+	std::cout << "=========================================================================================================================\n";
 	std::ifstream fajlKategorije;
 	fajlKategorije.open("Kategorije.txt");
 	std::string pomString;
@@ -622,7 +632,7 @@ void Administrator::odjava()
     this->sifra="";
     std::cout<<"Uspjesno ste se odjavili\n";
 }
-int Administrator::pomBrisi()
+void Administrator::pomBrisi()
 {
     std::string naziv("");
     std::string novi("");
