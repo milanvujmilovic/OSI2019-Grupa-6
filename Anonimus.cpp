@@ -14,7 +14,8 @@ Anonimus::Anonimus()
 
 void Anonimus::pisiDogadjaj(std::vector<std::string>& dogadjaj)
 {
-	std::cout << "Dogadjaj:\n";
+	std::cout << "Dogadjaj:" << std::endl;
+	std::cout << "-----------" << std::endl;
 	for (std::string s : dogadjaj)
 		std::cout << s << std::endl;
 	std::cout << std::endl;
@@ -40,6 +41,8 @@ void Anonimus::pregledDanasnjihDogadjaja(std::ifstream& dat1, std::ifstream& dat
 	std::string pomocna, pom;
 	std::vector<std::string> dogadjaj;
 	int k = 0, br = brojDogadjaja(dat1);
+	std::cout << "Pregled danasnjih dogadjaja u gradu:" << std::endl;
+	std::cout << "====================================" << std::endl << std::endl;
 	for (int i = 0; i < br; i++)
 	{
 		for (int i = 0; i < 5; i++)
@@ -47,11 +50,11 @@ void Anonimus::pregledDanasnjihDogadjaja(std::ifstream& dat1, std::ifstream& dat
 			std::getline(dat2, pomocna);
 			dogadjaj.push_back(pomocna);
 		}
-		std::stringstream ss(pomocna); //stringstream se koristi za citanje stringa(konkretno datuma) i razdvaja dan mjesec i godinu drugim argumentom('.')
-		std::vector<std::string> datum; //vector sluzi za smijestanje dana, mjeseca i godine kao niza stringova
-		while (std::getline(ss, pom, '.')) //getline se koristi za razdvajanje stringa na dan, mjesec i godinu pomocu tacke
-			datum.push_back(pom); //u vector se smijestaju dan, mjesec i godina
-		int d = std::stoi(datum[0]), m = std::stoi(datum[1]), g = std::stoi(datum[2]); //datum[0], datum[1] i datum[2] su stringovi koji predstavljaju dan, mjesec i godinu
+		std::stringstream ss(pomocna);
+		std::vector<std::string> datum; 
+		while (std::getline(ss, pom, '.'))
+			datum.push_back(pom);
+		int d = std::stoi(datum[0]), m = std::stoi(datum[1]), g = std::stoi(datum[2]);
 		tm p = konverzijaDatuma();
 		std::getline(dat2, pomocna);
 		int br_kom = stoi(pomocna);
@@ -63,9 +66,9 @@ void Anonimus::pregledDanasnjihDogadjaja(std::ifstream& dat1, std::ifstream& dat
 		if (d == p.tm_mday && m == p.tm_mon + 1 && g == p.tm_year + 1900) {
 			pisiDogadjaj(dogadjaj); k++;
 		}
-		dogadjaj.clear(); //resetovanje vektora (niza)
+		dogadjaj.clear(); 
 	}
-	if (k == 0) std::cout << "Danas nema dogadjaja u gradu." << std::endl;
+	if (k == 0) std::cout << "Danas nema dogadjaja u gradu." << std::endl<<std::endl;
 	dat1.seekg(0); dat2.seekg(0);
 }
 
@@ -74,6 +77,8 @@ void Anonimus::pregledBuducihDogadjaja(std::ifstream& dat1, std::ifstream& dat2)
 	std::string pomocna, pom;
 	std::vector<std::string> dogadjaj;
 	int k = 0, br = brojDogadjaja(dat1);
+	std::cout << "Pregled buducih dogadjaja u gradu:" << std::endl;
+	std::cout << "==================================" << std::endl << std::endl;
 	for (int i = 0; i < br; i++)
 	{
 		for (int i = 0; i < 5; i++)
@@ -99,7 +104,7 @@ void Anonimus::pregledBuducihDogadjaja(std::ifstream& dat1, std::ifstream& dat2)
 		}
 		dogadjaj.clear();
 	}
-	if (k == 0) std::cout << "Nema buducih dogadjaja u gradu." << std::endl;
+	if (k == 0) std::cout << "Nema buducih dogadjaja u gradu." << std::endl<<std::endl;
 	dat1.seekg(0); dat2.seekg(0);
 }
 
@@ -108,7 +113,9 @@ void Anonimus::pregledProslihDogadjaja(std::ifstream& dat1, std::ifstream& dat2)
 	std::string pomocna, pom;
 	std::vector<std::string> dogadjaj;
 	int k = 0, br = brojDogadjaja(dat1);
-	for (int i = 0; i < br; i++)
+	std::cout << "Pregled proslih dogadjaja u gradu:" << std::endl;
+	std::cout << "==================================" << std::endl<< std::endl;
+    for (int i = 0; i < br; i++)
 	{
 		for (int i = 0; i < 5; i++)
 		{
@@ -133,7 +140,7 @@ void Anonimus::pregledProslihDogadjaja(std::ifstream& dat1, std::ifstream& dat2)
 		}
 		dogadjaj.clear();
 	}
-	if (k == 0) std::cout << "Nema buducih dogadjaja u gradu." << std::endl;
+	if (k == 0) std::cout << "Nema proslih dogadjaja u gradu." << std::endl<<std::endl;
 	dat1.seekg(0); dat2.seekg(0);
 }
 
@@ -162,26 +169,32 @@ void Anonimus::igrajKviz(std::ifstream& pitanja, std::ifstream& odgovori)
 		{
 			if (c.compare(x) == 0)
 			{
-				std::cout << "Tacan odgovor!" << std::endl;
+				std::cout << "Tacan odgovor!" << std::endl<<std::endl;
 				br++;
 			}
 			else
-				std::cout << "Pogresan odgovor!" << std::endl;
+				std::cout << "Pogresan odgovor!" << std::endl<<std::endl;
 		}
 		n--;
 	} while (n);
 	std::cout << "Vas konacan rezultat je: " << br << " tacnih odgovora od 10 mogucih." << std::endl << "         Hvala na ucestvovanju!" << std::endl;
-	pitanja.seekg(0);
-	odgovori.seekg(0);
+	pitanja.seekg(0); odgovori.seekg(0);
+
 }
 
 void Anonimus::pregledPoKategoriji(std::ifstream& dogadjaj, std::ifstream& konfiguracija, std::ifstream& kategorije)
 {
 	std::string pomocna1, pomocna2, kategorija, ponuda;
 	std::vector<std::string> dog;
-	int brojD, brojK, kontrola;
+	int brojD, brojK,brojac;
+	std::string kontrola,d,n;
+	d = 'd';
+	n = 'n';
 	brojD = brojDogadjaja(konfiguracija);
+	std::cout << "Pregled dogadjaja u gradu po kategoriji:" << std::endl;
+	std::cout << "========================================" << std::endl<<std::endl;
 	do {
+		brojac = brojD;
 		std::cout << "Izaberite zeljenu kategoriju:" << std::endl;
 		while (!kategorije.eof())
 		{
@@ -200,7 +213,10 @@ void Anonimus::pregledPoKategoriji(std::ifstream& dogadjaj, std::ifstream& konfi
 			dog.push_back(pomocna1);
 			std::transform(pomocna1.begin(), pomocna1.end(), pomocna1.begin(), ::tolower);
 			if (kategorija.compare(pomocna1) == 0)
+			{
 				pom = 1;
+				brojac--;
+			}
 			std::getline(dogadjaj, pomocna1);
 			dog.push_back(pomocna1);
 			std::getline(dogadjaj, pomocna1);
@@ -220,13 +236,19 @@ void Anonimus::pregledPoKategoriji(std::ifstream& dogadjaj, std::ifstream& konfi
 			dog.clear();
 
 		}
+		if (brojac == brojD)
+			std::cout << "Nema dogadjaja iz trazene kategorije!\n";
 		dogadjaj.seekg(0);
 		konfiguracija.seekg(0);
 		kategorije.seekg(0);
 		std::cout << std::endl;
-		std::cout << "Ako zelite nastaviti pretragu po kategoriji unesite '1' , ako zelite napustiti pretragu unesite '0'." << std::endl;
-		std::cin >> kontrola;
-	} while (kontrola);
+		do
+		{
+			std::cout << "Ako zelite nastaviti pretragu po kategoriji unesite 'd' , ako zelite napustiti pretragu unesite 'n'." << std::endl;
+			std::cin >> kontrola;
+		} while ((kontrola.compare(d)!=0) && kontrola.compare(n)!=0);
+		std::cout << std::endl;
+	} while (kontrola.compare(n)!=0);
 }
 
 Anonimus::~Anonimus()
