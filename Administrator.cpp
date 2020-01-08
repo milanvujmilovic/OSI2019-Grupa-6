@@ -282,7 +282,7 @@ int Administrator::urediDogadjaj()
 			{
 				if (prijava())
 				{
-					std::cout << "Nemoguce kreiranje dogadjaja.Nemate administratorski nalog.";//<< std::endl;
+					std::cout << "Nemoguce uredjivanje dogadjaja.Nemate administratorski nalog.";//<< std::endl;
 					break;
 				}
 				else
@@ -363,7 +363,7 @@ if (provjeraPrijave())
 			{
 				if (prijava())
 				{
-					std::cout << "Nemoguce kreiranje dogadjaja.Nemate administratorski nalog.";//<< std::endl;
+					std::cout << "Nemoguce dodati kategoriju.Nemate administratorski nalog.";//<< std::endl;
 					break;
 				}
 				else
@@ -398,7 +398,7 @@ if (provjeraPrijave())
 			{
 				if (prijava())
 				{
-					std::cout << "Nemoguce kreiranje dogadjaja.Nemate administratorski nalog.";//<< std::endl;
+					std::cout << "Nemoguce obrisati kategoriju.Nemate administratorski nalog.";//<< std::endl;
 					break;
 				}
 				else
@@ -445,8 +445,9 @@ int Administrator:: dodaj()
     if (fajl.is_open())
     {
 		/*Obezbjediti korektan unos ako nema ni jedne kategorije*/
-		fajl << std::endl;//radi kad se dodaje na kraj
+		//radi kad se dodaje na kraj
 		fajl << novaKategorija;//radi kad se dodaje na kraj
+		fajl << std::endl;
         fajl.close();
     }
     return 0;
@@ -484,7 +485,7 @@ void Administrator:: uredi()
 {
     std::string naziv("");
     std::string novi("");
-    std::cout<<"Unesite ime dogadjaja koji zelite promijeniti:\n";
+    std::cout<<"Unesite naziv dogadjaja koji zelite promijeniti:\n";
     getline(std::cin,naziv);
     std::vector <Dogadjaj> dogadjaji;
     Dogadjaj pomDogadjaj;
@@ -578,7 +579,7 @@ void Administrator:: uredi()
             }
         }
         else
-    printf("Uneseni dogadjaj ne postoji\n");
+        std::cout<<"Uneseni dogadjaj ne postoji\n";
 }
 void Administrator::kofiguracija()
 {
@@ -620,4 +621,70 @@ void Administrator::odjava()
     this->ime="";
     this->sifra="";
     std::cout<<"Uspjesno ste se odjavili\n";
+}
+int Administrator::pomBrisi()
+{
+    std::string naziv("");
+    std::string novi("");
+    std::cout<<"Unesite naziv dogadjaja koji zelite obrisati:\n";
+    getline(std::cin,naziv);
+    std::vector <Dogadjaj> dogadjaji;
+    Dogadjaj pomDogadjaj;
+    citajDogadjaje(dogadjaji);
+    int pom=0,i=0,pos;
+    for(Dogadjaj &temp: dogadjaji)
+    {
+        if(((naziv.compare(temp.getNaziv()))==0))
+        {
+
+            pom=1;
+            pos=i;
+        }
+        i++;
+    }
+    if(pom==1)
+    {
+        dogadjaji.erase(dogadjaji.begin()+pos);
+        remove("Dogadjaji.txt");
+        for(Dogadjaj &temp: dogadjaji)
+            temp.upisDogadjaja();
+
+    }
+    else
+        std::cout<<"Uneseni dogadjaj ne postoji\n";
+
+}
+int Administrator::brisiDogadjaj()
+{
+ if (provjeraPrijave())
+	{
+		std::string odgovor;
+		std::cout << "Niste prijavljeni u sistem.\nDa li zelite da se prijavite?(Da ili Ne)";// << std::endl;
+		std::cin >> odgovor;
+		while (odgovor != "Da" || odgovor != "da" || odgovor != "DA" || odgovor != "Ne" || odgovor != "ne" || odgovor != "NE")
+		{
+			if (odgovor == "Da" || odgovor == "da" || odgovor == "DA")
+			{
+				if (prijava())
+				{
+					std::cout << "Nemoguce obrisati dogadjaj.Nemate administratorski nalog.";//<< std::endl;
+					break;
+				}
+				else
+				{
+					pomBrisi();
+					break;
+				}
+			}
+			else
+			{
+				return 0;
+			}
+		}
+	}
+	else
+	{
+		pomBrisi();
+	}
+	return 0;
 }
