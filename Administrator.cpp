@@ -359,7 +359,7 @@ if (provjeraPrijave())
 		std::cin >> odgovor;
 		while (odgovor != "Da" || odgovor != "da" || odgovor != "DA" || odgovor != "Ne" || odgovor != "ne" || odgovor != "NE")
 		{
-			if (odgovor == "Da" || odgovor == "da" || odgovor == "DA")
+			if (odgovor == "Da" || odgovor == "da" ||  odgovor == "DA")
 			{
 				if (prijava())
 				{

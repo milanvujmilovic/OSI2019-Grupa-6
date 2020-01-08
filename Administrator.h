@@ -15,7 +15,7 @@ class Administrator
 		void citajDogadjaje(std::vector<Dogadjaj>&);//uradjeno
 		int dodaj();
 		int brisi();
-        int pomBrisi();
+         int pomBrisi();
 		void uredi();
 		void kofiguracija();//update kofiguracione datoteke pri kreiranju dogadjaja
 		bool provjeraKategorije(std::string);//uradjeno
