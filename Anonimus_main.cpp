@@ -1,11 +1,17 @@
-#include "Dogadjaj.h"
 #include "Anonimus.h"
-#include <iostream>
-#include <fstream>
-#include <string>
+#include "Naslov.h"
 
 int main()
 {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SMALL_RECT windowSize = { 0, 0, 150, 24 };
+	SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
+	SetConsoleTitle(L"EVENT LEADER 2019");
+	Sleep(2000);
+	std::cout << "=========================================================================================================================\n";
+	ascii_art();
+	std::cout << "=========================================================================================================================\n";
+	Sleep(2000);
 	Anonimus korisnik;
 	char opcija;
 	while (true) {
@@ -29,21 +35,40 @@ int main()
 		pitanja.open("Pitanja.txt", std::ios::in);
 		odgovori.open("Odgovori.txt", std::ios::in);
 		if (opcija == '1')
+		{
+			std::cout << std::endl;
 			korisnik.pregledDanasnjihDogadjaja(konf, dog);
+		}
 		if (opcija == '2')
+		{
+			std::cout << std::endl;
 			korisnik.pregledBuducihDogadjaja(konf, dog);
+		}
 		if (opcija == '3')
+		{
+			std::cout << std::endl;
 			korisnik.pregledProslihDogadjaja(konf, dog);
+		}
 		if (opcija == '4')
+		{
+			std::cout << std::endl;
 			korisnik.pregledPoKategoriji(dog, konf, kat);
+		}
 		if (opcija == '5')
+		{
+			std::cout << std::endl;
 			//Cekamo da Kljestan zavrsi metodu za dodavanje komentara
 			;
+		}
 		if (opcija == '6')
+		{
+			std::cout << std::endl;
 			korisnik.igrajKviz(pitanja, odgovori);
+		}
 		if (opcija == 'q')
 			return 0;
 		std::cout << std::endl;
 	}
 	return 0;
 }
+
