@@ -18,7 +18,8 @@ class Administrator
 		int brisi();
         void pomBrisi();
 		void uredi();
-		void kofiguracija();//update kofiguracione datoteke pri kreiranju dogadjaja
+		void kofiguracijaPovecaj();//update kofiguracione datoteke pri kreiranju dogadjaja
+		void konfiguracijaSmanji();
 		bool provjeraKategorije(std::string);//uradjeno
 		void initDogadjaja();//uradjeno
 		std::vector<std::string> split(const std::string& s, char delimiter);//uradjeno

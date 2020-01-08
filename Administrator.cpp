@@ -153,6 +153,41 @@ void Administrator::sortirajDogadjaje(std::vector<Dogadjaj>& nizDogadjaja,std::s
 	}
 }
 
+void Administrator::konfiguracijaSmanji()
+{
+	std::fstream fajl;
+	std::vector<std::string> pomVek;
+	fajl.open("Konfiguraciona_datoteka.txt", std::ios::in | std::ios::out);
+	std::string pomString;
+	int pom = 0;
+	if (fajl.is_open())
+	{
+		std::cout << "uspjeh";
+		for (int i = 0; i < 12; ++i)
+		{
+			getline(fajl, pomString);
+			pomVek.push_back(pomString);
+		}
+		pom = stoi(pomString);
+		pom--;
+		fajl.close();
+		std::fstream upis;
+		upis.open("Temp.txt", std::ios::in | std::ios::out | std::ios::app);
+		for (int i = 0; i < 12; ++i)
+		{
+			if (i < 11)
+			{
+				upis << pomVek[i] << std::endl;
+			}
+			else
+				upis << pom;
+		}
+		upis.close();
+		remove("Konfiguraciona_datoteka.txt");
+		rename("Temp.txt", "Konfiguraciona_datoteka.txt");
+	}
+}
+
 bool Administrator::provjeraKategorije(std::string nazivKategorije)
 {
 	std::ifstream fajlKategorije;
@@ -219,7 +254,7 @@ void Administrator::initDogadjaja()
 	datum.tm_min = min;
 	Dogadjaj noviDogadjaj{ ime,kategorija,opis,lokacija,datum };
 	noviDogadjaj.upisDogadjaja();
-	kofiguracija();
+	kofiguracijaPovecaj();
 }
 
 std::vector<std::string> Administrator::split(const std::string& s, char delimiter)
@@ -591,7 +626,7 @@ void Administrator:: uredi()
         else
         std::cout<<"Uneseni dogadjaj ne postoji\n";
 }
-void Administrator::kofiguracija()
+void Administrator::kofiguracijaPovecaj()
 {
 	std::fstream fajl;
 	std::vector<std::string> pomVek;
@@ -683,6 +718,7 @@ int Administrator::brisiDogadjaj()
 				else
 				{
 					pomBrisi();
+					konfiguracijaSmanji();
 					break;
 				}
 			}
@@ -695,6 +731,7 @@ int Administrator::brisiDogadjaj()
 	else
 	{
 		pomBrisi();
+		konfiguracijaSmanji();
 	}
 	return 0;
 }

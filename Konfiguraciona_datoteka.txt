@@ -9,4 +9,4 @@ Broj stanovnika:
 Pozivni broj:
 051
 Broj dogadjaja u gradu:
-12
+9
