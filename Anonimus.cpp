@@ -179,48 +179,54 @@ void Anonimus::pregledPoKategoriji(std::ifstream& dogadjaj, std::ifstream& konfi
 {
 	std::string pomocna1, pomocna2, kategorija, ponuda;
 	std::vector<std::string> dog;
-	int brojD, brojK;
+	int brojD, brojK, kontrola;
 	brojD = brojDogadjaja(konfiguracija);
-	std::cout << "Izaberite zeljenu kategoriju:" << std::endl;
-	while (!kategorije.eof())
-	{
-		std::getline(kategorije, ponuda);
-		std::cout << "-" << ponuda << std::endl;
-	}
-	std::cin >> kategorija;
-	std::transform(kategorija.begin(), kategorija.end(), kategorija.begin(), ::tolower);
-	for (int i = 0; i < brojD; i++)
-	{
-		int pom = 0;
-		std::getline(dogadjaj, pomocna1);
-		dog.push_back(pomocna1);
-		std::getline(dogadjaj, pomocna1);
-		dog.push_back(pomocna1);
-		std::transform(pomocna1.begin(), pomocna1.end(), pomocna1.begin(), ::tolower);
-		if (kategorija.compare(pomocna1) == 0)
-			pom = 1;
-		std::getline(dogadjaj, pomocna1);
-		dog.push_back(pomocna1);
-		std::getline(dogadjaj, pomocna1);
-		dog.push_back(pomocna1);
-		std::getline(dogadjaj, pomocna1);
-		dog.push_back(pomocna1);
-		std::getline(dogadjaj, pomocna1);
-		brojK = std::stoi(pomocna1);
-		dog.push_back(pomocna1);
-		for (int j = 0; j < brojK; j++)
+	do {
+		std::cout << "Izaberite zeljenu kategoriju:" << std::endl;
+		while (!kategorije.eof())
 		{
+			std::getline(kategorije, ponuda);
+			std::cout << "-" << ponuda << std::endl;
+		}
+		std::cin >> kategorija;
+		std::cout << std::endl;
+		std::transform(kategorija.begin(), kategorija.end(), kategorija.begin(), ::tolower);
+		for (int i = 0; i < brojD; i++)
+		{
+			int pom = 0;
 			std::getline(dogadjaj, pomocna1);
 			dog.push_back(pomocna1);
-		}
-		if (pom == 1)
-			pisiDogadjaj(dog);
-		dog.clear();
+			std::getline(dogadjaj, pomocna1);
+			dog.push_back(pomocna1);
+			std::transform(pomocna1.begin(), pomocna1.end(), pomocna1.begin(), ::tolower);
+			if (kategorija.compare(pomocna1) == 0)
+				pom = 1;
+			std::getline(dogadjaj, pomocna1);
+			dog.push_back(pomocna1);
+			std::getline(dogadjaj, pomocna1);
+			dog.push_back(pomocna1);
+			std::getline(dogadjaj, pomocna1);
+			dog.push_back(pomocna1);
+			std::getline(dogadjaj, pomocna1);
+			brojK = std::stoi(pomocna1);
+			dog.push_back(pomocna1);
+			for (int j = 0; j < brojK; j++)
+			{
+				std::getline(dogadjaj, pomocna1);
+				dog.push_back(pomocna1);
+			}
+			if (pom == 1)
+				pisiDogadjaj(dog);
+			dog.clear();
 
-	}
-	dogadjaj.seekg(0);
-	konfiguracija.seekg(0);
-	kategorije.seekg(0);
+		}
+		dogadjaj.seekg(0);
+		konfiguracija.seekg(0);
+		kategorije.seekg(0);
+		std::cout << std::endl;
+		std::cout << "Ako zelite nastaviti pretragu po kategoriji unesite '1' , ako zelite napustiti pretragu unesite '0'." << std::endl;
+		std::cin >> kontrola;
+	} while (kontrola);
 }
 
 Anonimus::~Anonimus()
