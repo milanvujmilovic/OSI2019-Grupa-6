@@ -13,7 +13,8 @@ int main()
 	std::cout << "=========================================================================================================================\n";
 	Sleep(2000);
 	Anonimus korisnik;
-	char opcija;
+	std::string opcija,a,b,c,d,e,f,q;
+	a = '1', b = '2', c = '3', d = '4', e = '5', f = '6', q = 'q';
 	while (true) {
 		std::cout << "=========================================\n";
 		std::cout << "Izaberite zeljenu opciju:\n";
@@ -26,46 +27,44 @@ int main()
 		std::cout << "6-Igraj kviz\n";
 		std::cout << "q-Izadji iz programa\n";
 		std::cout << "=========================================\n";
-		std::cin >> opcija;
-		std::cin.ignore();
+		std::getline(std::cin, opcija);
 		std::ifstream dog, konf, kat, pitanja, odgovori;
 		dog.open("Dogadjaji.txt", std::ios::in);
 		konf.open("Konfiguraciona_datoteka.txt", std::ios::in);
 		kat.open("Kategorije.txt", std::ios::in);
 		pitanja.open("Pitanja.txt", std::ios::in);
 		odgovori.open("Odgovori.txt", std::ios::in);
-		if (opcija == '1')
+		if (opcija.compare(a)==0)
 		{
 			std::cout << std::endl;
 			korisnik.pregledDanasnjihDogadjaja(konf, dog);
 		}
-		if (opcija == '2')
+		if (opcija.compare(b) == 0)
 		{
 			std::cout << std::endl;
 			korisnik.pregledBuducihDogadjaja(konf, dog);
 		}
-		if (opcija == '3')
+		if (opcija.compare(c) == 0)
 		{
 			std::cout << std::endl;
 			korisnik.pregledProslihDogadjaja(konf, dog);
 		}
-		if (opcija == '4')
+		if (opcija.compare(d) == 0)
 		{
 			std::cout << std::endl;
 			korisnik.pregledPoKategoriji(dog, konf, kat);
 		}
-		if (opcija == '5')
+		if (opcija.compare(e) == 0)
 		{
 			std::cout << std::endl;
-			//Cekamo da Kljestan zavrsi metodu za dodavanje komentara
-			;
+			korisnik.dodavanjeKomentara();
 		}
-		if (opcija == '6')
+		if (opcija.compare(f) == 0)
 		{
 			std::cout << std::endl;
 			korisnik.igrajKviz(pitanja, odgovori);
 		}
-		if (opcija == 'q')
+		if (opcija.compare(q) == 0)
 			return 0;
 		std::cout << std::endl;
 	}
