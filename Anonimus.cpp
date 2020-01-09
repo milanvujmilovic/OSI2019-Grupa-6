@@ -163,7 +163,7 @@ void Anonimus::igrajKviz(std::ifstream& pitanja, std::ifstream& odgovori)
 		std::getline(odgovori, x);
 		do {
 			std::cout << "Unesite odgovor (a,b ili c) :" << std::endl;
-			std::cin >> c;
+			std::getline(std::cin, c);
 		} while ((c.compare(a) != 0) && (c.compare(b) != 0) && (c.compare(ce) != 0));
 		if ((c.compare(a) == 0) || (c.compare(b) == 0) || (c.compare(ce) == 0))
 		{
@@ -242,13 +242,110 @@ void Anonimus::pregledPoKategoriji(std::ifstream& dogadjaj, std::ifstream& konfi
 		konfiguracija.seekg(0);
 		kategorije.seekg(0);
 		std::cout << std::endl;
+		std::getline(std::cin, kontrola);
 		do
 		{
 			std::cout << "Ako zelite nastaviti pretragu po kategoriji unesite 'd' , ako zelite napustiti pretragu unesite 'n'." << std::endl;
-			std::cin >> kontrola;
+			std::getline(std::cin, kontrola);
 		} while ((kontrola.compare(d)!=0) && kontrola.compare(n)!=0);
 		std::cout << std::endl;
 	} while (kontrola.compare(n)!=0);
+}
+
+void Anonimus::citajDogadjaje(std::vector<Dogadjaj>& nizDogadjaja)
+{
+	std::ifstream fajlDogadjaji;
+	fajlDogadjaji.open("Dogadjaji.txt");
+	while (!fajlDogadjaji.eof())
+	{
+		Dogadjaj pomDogadjaj("", "", "", "", { 0,0,0,0,0,0,0,0,0 });
+		std::string pomString = "";
+		getline(fajlDogadjaji, pomString);//cita ime
+		pomDogadjaj.setNaziv(pomString);
+		getline(fajlDogadjaji, pomString);//cita kategoriju
+		pomDogadjaj.setVrsta(pomString);
+		getline(fajlDogadjaji, pomString);//cita opis
+		pomDogadjaj.setOpis(pomString);
+		getline(fajlDogadjaji, pomString);//cita lokaciju
+		pomDogadjaj.setLokacija(pomString);
+		getline(fajlDogadjaji, pomString);//cita datum kao string
+		std::tm datum;//konvertovati string u datum
+		std::vector<std::string> pomVektor = split(pomString, '-');
+		std::string pomDatum = pomVektor.at(0);
+		std::string pomVrijeme = pomVektor.at(1);
+		std::vector<std::string> pVDatum = split(pomDatum, '.');
+		std::vector<std::string> pVVrijeme = split(pomVrijeme, ':');
+		datum.tm_mday = stoi(pVDatum.at(0));//strpati u pomocnu funkciju
+		datum.tm_mon = stoi(pVDatum.at(1));
+		datum.tm_year = stoi(pVDatum.at(2));
+		datum.tm_hour = stoi(pVVrijeme.at(0));
+		datum.tm_min = stoi(pVVrijeme.at(1));
+		pomDogadjaj.setDatum(datum);
+		int brKomentara;
+		getline(fajlDogadjaji, pomString);
+		brKomentara = stoi(pomString);
+		for (int i = 0; i < brKomentara; ++i)
+		{
+			getline(fajlDogadjaji, pomString);
+			pomDogadjaj.setKomentar(pomString);
+
+		}
+		nizDogadjaja.push_back(pomDogadjaj);
+	}
+	fajlDogadjaji.close();
+}
+
+std::vector<std::string> Anonimus::split(const std::string& s, char delimiter)
+{
+	std::vector<std::string> tokens;
+	std::string token;
+	std::istringstream token_stream(s);
+	while (std::getline(token_stream, token, delimiter)) {
+		tokens.push_back(token);
+	}
+	return tokens;
+}
+
+std::tm Anonimus::stringToDate(std::string)
+{
+	return std::tm();
+}
+
+void Anonimus::dodavanjeKomentara()
+{
+	std::vector<Dogadjaj> nizDogadjaja;
+	citajDogadjaje(nizDogadjaja);
+	std::string naziv, komentar;
+	std::cout << "Za koji dogadjaj zelite da unesete komentar?" << std::endl;
+	std::getline(std::cin, naziv);
+	int i = 0, k = 0;
+	for (Dogadjaj d : nizDogadjaja)
+	{
+		if (std::strcmp(naziv.c_str(), d.getNaziv().c_str()) == 0)
+		{
+			break;
+		}
+		k++;
+	}
+	if (k == nizDogadjaja.size())
+	{
+		std::cout << "Ne postoji trazeni dogadjaj." << std::endl;
+	}
+	else
+	{
+		std::ifstream fajlDogadjaji;
+		fajlDogadjaji.open("Dogadjaji.txt", std::ofstream::out | std::ofstream::trunc);
+		fajlDogadjaji.close();
+
+		std::cout << "Unesite komentar:" << std::endl;
+		std::getline(std::cin, komentar);
+		nizDogadjaja[k].setKomentar(komentar);
+		for (Dogadjaj d : nizDogadjaja)
+		{
+			nizDogadjaja[i].upisDogadjaja();
+			i++;
+		}
+	}
 }
 
 Anonimus::~Anonimus()
