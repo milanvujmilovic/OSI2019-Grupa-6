@@ -315,8 +315,29 @@ void Anonimus::dodavanjeKomentara()
 {
 	std::vector<Dogadjaj> nizDogadjaja;
 	citajDogadjaje(nizDogadjaja);
-	std::string naziv, komentar;
+	std::string naziv, komentar,pom;
 	std::cout << "Za koji dogadjaj zelite da unesete komentar?" << std::endl;
+	std::ifstream dat;
+	dat.open("Dogadjaji.txt");
+	while (!dat.eof())
+	{
+		std::getline(dat, pom);
+		std::cout << "-" << pom << std::endl;
+		std::getline(dat, pom);
+		std::getline(dat, pom);
+		std::getline(dat, pom);
+		std::getline(dat, pom);
+		std::getline(dat, pom);
+		int i = std::stoi(pom);
+		while (i)
+		{
+			std::getline(dat, pom);
+			i--;
+		}
+		
+	}
+	dat.seekg(0);
+	dat.close();
 	std::getline(std::cin, naziv);
 	int i = 0, k = 0;
 	for (Dogadjaj d : nizDogadjaja)
